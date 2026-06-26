@@ -1,0 +1,27 @@
+flowchart TD
+    SSM[SSM Parameter Store]
+
+    A[S3 Input Bucket\ngroup36-reviews-input]
+    B[Preprocessing Lambda]
+    C[S3 Preprocessed Bucket\ngroup36-reviews-preprocessed]
+    D[EventBridge Rule]
+    E[Profanity Lambda]
+    F[Sentiment Lambda]
+    G[(Reviews DynamoDB Table)]
+    H[Ban Lambda]
+    I[(Customers DynamoDB Table)]
+
+    A -->|S3 ObjectCreated| B
+    B -->|PutObject| C
+    C -->|Object Created event| D
+    D --> E
+    D --> F
+    E -->|UpdateItem| G
+    F -->|UpdateItem| G
+    G -->|DynamoDB Stream| H
+    H -->|UpdateItem| I
+
+    SSM -. GetParameter .-> B
+    SSM -. GetParameter .-> E
+    SSM -. GetParameter .-> F
+    SSM -. GetParameter .-> H
