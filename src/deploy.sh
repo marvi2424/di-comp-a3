@@ -95,8 +95,9 @@ package_lambda() {
         python:3.12-alpine \
         pip install --no-cache-dir -r requirements.txt -t package
     else
-      echo "WARNING: docker not found — installing deps on the host; native wheels" \
-           "may not match the MiniStack (musl) worker." >&2
+      echo "Note: docker not found — building deps on the host instead. This is the" \
+           "right choice when MiniStack runs Lambdas on the host runtime (e.g. the" \
+           "cluster); install docker only if it uses a docker/musl Lambda worker." >&2
       python3 -m pip install \
         -r "${lambda_dir}/requirements.txt" \
         -t "${lambda_dir}/package"

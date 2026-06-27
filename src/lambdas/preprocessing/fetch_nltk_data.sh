@@ -19,6 +19,10 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEST="${SCRIPT_DIR}/nltk_data"
 
+# The corpora are DATA, not a pip package, so nltk must be importable to run
+# its downloader. Install it here if it isn't already (no manual step needed).
+python3 -c "import nltk" 2>/dev/null || python3 -m pip install --user "nltk==3.8.1"
+
 python3 -m nltk.downloader -d "${DEST}" punkt stopwords wordnet omw-1.4
 
 echo "NLTK data ready in ${DEST} ($(du -sh "${DEST}" | cut -f1) unzipped)"
