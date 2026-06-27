@@ -1,9 +1,15 @@
+"""Sentiment Lambda (DIC2026 A3, Group 36) — TEMPORARY non-crashing skeleton.
 
-import boto3, os, json
+P1's skeleton defined ``def handler(...)`` while deploy.sh registers
+``handler.lambda_handler``, so every EventBridge invocation crashed on init.
+This restores a valid ``lambda_handler`` that returns successfully.
 
-ssm = boto3.client('ssm', endpoint_url=os.environ.get('MINISTACK_ENDPOINT', 'http://localhost:4566'))
+NOTE: placeholder only. P3 owns the real sentiment logic — classify each review
+as positive / neutral / negative with NLTK VADER over summary + reviewText,
+factoring in ``overall`` (CONTRACT.md §10).
+"""
 
-def handler(event, context):
-    table = ssm.get_parameter(Name='/dic-reviews/dynamodb-table')['Parameter']['Value']
-    # TODO: P3 fills sentiment logic here
-    return {"statusCode": 200, "body": "sentiment skeleton ok"}
+
+def lambda_handler(event, context):
+    print("sentiment skeleton invoked")
+    return {"statusCode": 200}

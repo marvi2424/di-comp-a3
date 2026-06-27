@@ -49,7 +49,7 @@ JSON
 # --- wait for the preprocessing output (poll up to ~30s) ------------------
 wait_for_key() {
   local key="$1" i
-  for i in $(seq 1 30); do
+  for i in $(seq 1 60); do
     if "${AWS[@]}" s3 ls "s3://${PRE_BUCKET}/${key}" >/dev/null 2>&1; then
       return 0
     fi
@@ -77,7 +77,7 @@ get_profane() {
 
 wait_for_profane() {
   local rid="$1" i v
-  for i in $(seq 1 30); do
+  for i in $(seq 1 60); do
     v="$(get_profane "$rid")"
     if [[ "$v" == "true" || "$v" == "false" ]]; then
       echo "$v"; return 0
