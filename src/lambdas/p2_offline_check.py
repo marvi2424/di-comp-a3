@@ -59,18 +59,30 @@ class FakeDynamoResource:
         return self._table
 
 
-def install_fake_boto3(s3=None, ssm=None, dynamo=None):
+class FakeEvents:
+    def __init__(self):
+        self.entries = []
+
+    def put_events(self, Entries):
+        self.entries.extend(Entries)
+        return {"FailedEntryCount": 0}
+
+
+def install_fake_boto3(s3=None, ssm=None, dynamo=None, events=None):
     """Patch boto3.client/resource before a handler module is imported."""
     import boto3
 
+    events = events or FakeEvents()
+
     def fake_client(service, **kwargs):
-        return {"s3": s3, "ssm": ssm}[service]
+        return {"s3": s3, "ssm": ssm, "events": events}[service]
 
     def fake_resource(service, **kwargs):
         return {"dynamodb": dynamo}[service]
 
     boto3.client = fake_client
     boto3.resource = fake_resource
+    return events
 
 
 def load_handler(name, path):
@@ -98,7 +110,7 @@ def test_preprocessing():
     s3 = FakeS3()
     ssm = FakeSSM({"/dic2026/group36/s3/preprocessed_bucket": "preprocessed-bucket"})
     s3.objects[("input-bucket", "review-000001.json")] = json.dumps(record).encode()
-    install_fake_boto3(s3=s3, ssm=ssm)
+    events = install_fake_boto3(s3=s3, ssm=ssm)
 
     pre = load_handler("pre_handler", os.path.join(HERE, "preprocessing", "handler.py"))
 
@@ -153,7 +165,18 @@ def test_preprocessing():
     assert "dog" in controlled, controlled  # plural -> singular (noun lemma)
     assert "the" not in controlled and "were" not in controlled, controlled
 
+    # Preprocessing must publish the EventBridge "Object Created" event itself
+    # (MiniStack doesn't auto-emit it for Lambda-written objects).
+    assert len(events.entries) == 1, events.entries
+    entry = events.entries[0]
+    assert entry["Source"] == "aws.s3"
+    assert entry["DetailType"] == "Object Created"
+    detail = json.loads(entry["Detail"])
+    assert detail["bucket"]["name"] == "preprocessed-bucket"
+    assert detail["object"]["key"] == "preprocessed/review-000001.json"
+
     print("  preprocessing OK — key={} tokens(sample)={}".format(key, toks[:8]))
+    print("  eventbridge emit OK — {}".format(detail))
     return out
 
 

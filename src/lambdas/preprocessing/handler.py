@@ -37,6 +37,7 @@ ENDPOINT_URL = "http://localhost:4566" if os.getenv("STAGE") == "local" else Non
 
 s3 = boto3.client("s3", endpoint_url=ENDPOINT_URL)
 ssm = boto3.client("ssm", endpoint_url=ENDPOINT_URL)
+events = boto3.client("events", endpoint_url=ENDPOINT_URL)
 
 # --- NLTK data: use the bundled corpora, never download at runtime ----------
 _BUNDLED_NLTK_DATA = os.path.join(os.path.dirname(__file__), "nltk_data")
@@ -158,6 +159,29 @@ def iter_s3_records(event):
     raise ValueError("unsupported S3 event payload: {!r}".format(event))
 
 
+def emit_object_created(bucket, key):
+    """Publish the preprocessed-object "Object Created" event to EventBridge.
+
+    MiniStack does not emit S3 -> EventBridge notifications for objects written
+    by a Lambda's own ``put_object`` (only for external uploads), so the fan-out
+    rule to the profanity + sentiment Lambdas never fires on its own. Publishing
+    the same event explicitly makes the EventBridge rule (defined in deploy.sh)
+    match and fan out. On real AWS, S3 emits this natively; the extra event is
+    harmless because the downstream consumers are idempotent.
+    """
+    events.put_events(
+        Entries=[
+            {
+                "Source": "aws.s3",
+                "DetailType": "Object Created",
+                "Detail": json.dumps(
+                    {"bucket": {"name": bucket}, "object": {"key": key}}
+                ),
+            }
+        ]
+    )
+
+
 def lambda_handler(event, context):
     """Process every review object referenced by the triggering S3 event."""
     dest_bucket = get_parameter(SSM_PREPROCESSED_BUCKET)
@@ -181,6 +205,8 @@ def lambda_handler(event, context):
             ContentType="application/json",
         )
         print("preprocessed {} -> s3://{}/{}".format(key, dest_bucket, out_key))
+
+        emit_object_created(dest_bucket, out_key)
         processed.append(out_key)
 
     return {"statusCode": 200, "processed": processed}
