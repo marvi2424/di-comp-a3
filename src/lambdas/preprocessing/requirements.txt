@@ -1,0 +1,5 @@
+# Preprocessing Lambda dependencies.
+# Pinned to 3.8.1 deliberately: this release uses the classic `punkt` tokenizer
+# data (3.8.2+ switched word_tokenize to `punkt_tab`), so the bundled nltk_data/
+# matches the library at runtime. boto3 is provided by the Lambda runtime.
+nltk==3.8.1

@@ -1,0 +1,33 @@
+# --- Python ---------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# --- Virtual environments --------------------------------------------------
+venv/
+.venv/
+env/
+*venv/
+
+# --- Lambda build artifacts (created by deploy.sh: package/ + lambda.zip) ---
+src/lambdas/*/package/
+src/lambdas/*/lambda.zip
+
+# --- Bundled NLTK corpora --------------------------------------------------
+# ~86 MB of third-party data, regenerable with:
+#   cd src/lambdas/preprocessing && ./fetch_nltk_data.sh
+# Kept out of git, but it MUST be present at deploy time and MUST be included
+# in the final submission ZIP (P5 / instructions.pdf). Delete the next line if
+# you would rather commit the corpora so deploy "just works" after a clone.
+src/lambdas/preprocessing/nltk_data/
+
+# --- Dataset ---------------------------------------------------------------
+# Official devset (~57 MB) is obtained separately (see src/README.md) and is
+# not meant to live in git. It still ships in the final submission ZIP.
+src/data/reviews_devset.json
+
+# --- OS / editor cruft -----------------------------------------------------
+.DS_Store
+*.swp
+*~

@@ -1,0 +1,6 @@
+# Profanity Lambda dependencies.
+# profanityfilter is an old package but installs and imports cleanly on
+# python3.11 (pure-Python wheel). It pulls in `inflection` automatically and
+# works without spaCy (simple word-list matching), keeping the package small.
+# boto3 is provided by the Lambda runtime.
+profanityfilter==2.1.0
