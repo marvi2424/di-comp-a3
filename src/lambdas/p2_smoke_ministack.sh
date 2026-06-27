@@ -69,10 +69,13 @@ echo "--- preprocessed/review-000001.json ---"
 
 # --- wait for the profanity output in DynamoDB ----------------------------
 get_profane() {
+  # NOTE: the aws CLI renders a DynamoDB BOOL via --output text as "True"/"False"
+  # (Python-style, capitalised). Lower-case it so the comparisons below match.
   "${AWS[@]}" dynamodb get-item \
     --table-name "${REVIEWS_TABLE}" \
     --key "{\"reviewID\":{\"S\":\"$1\"}}" \
-    --query 'Item.profane.BOOL' --output text 2>/dev/null
+    --query 'Item.profane.BOOL' --output text 2>/dev/null \
+    | tr '[:upper:]' '[:lower:]'
 }
 
 wait_for_profane() {

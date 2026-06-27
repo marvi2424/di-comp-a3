@@ -82,9 +82,25 @@ package_lambda() {
   cp "${lambda_dir}/handler.py" "${lambda_dir}/package/handler.py"
 
   if [[ -f "${lambda_dir}/requirements.txt" ]]; then
-    python3 -m pip install \
-      -r "${lambda_dir}/requirements.txt" \
-      -t "${lambda_dir}/package"
+    # MiniStack executes Lambdas inside an Alpine Linux (musl libc), Python 3.12
+    # worker, so any native wheel (e.g. nltk's `regex`) must be a musllinux build
+    # for the worker's arch — NOT a build for the deploy host. Installing the deps
+    # inside python:3.12-alpine (Docker pulls the host's arch, which the worker
+    # shares) yields a package that loads on the worker from any host. Without this,
+    # a macOS host ships a darwin `regex` wheel and a glibc Linux host ships a
+    # manylinux one, and preprocessing dies at init: "cannot import name '_regex'".
+    if command -v docker >/dev/null 2>&1; then
+      docker run --rm \
+        -v "${lambda_dir}:/var/task" -w /var/task \
+        python:3.12-alpine \
+        pip install --no-cache-dir -r requirements.txt -t package
+    else
+      echo "WARNING: docker not found — installing deps on the host; native wheels" \
+           "may not match the MiniStack (musl) worker." >&2
+      python3 -m pip install \
+        -r "${lambda_dir}/requirements.txt" \
+        -t "${lambda_dir}/package"
+    fi
   fi
 
   if [[ -d "${lambda_dir}/nltk_data" ]]; then
