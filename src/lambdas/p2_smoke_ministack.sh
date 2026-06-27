@@ -15,7 +15,6 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DEVSET="${SCRIPT_DIR}/../data/reviews_devset.json"
 
 export MINISTACK_ENDPOINT="${MINISTACK_ENDPOINT:-http://localhost:4566}"
 export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
@@ -33,10 +32,12 @@ PRE_BUCKET="$(param /dic2026/group36/s3/preprocessed_bucket)"
 REVIEWS_TABLE="$(param /dic2026/group36/dynamodb/reviews_table)"
 echo "input=${INPUT_BUCKET}  preprocessed=${PRE_BUCKET}  table=${REVIEWS_TABLE}"
 
-# --- build two sample reviews ---------------------------------------------
+# --- build two sample reviews (self-contained; no devset needed) -----------
 CLEAN=/tmp/review-000001.json
 DIRTY=/tmp/review-000002.json
-head -1 "${DEVSET}" >"${CLEAN}"   # first devset record = one complete JSON object
+cat >"${CLEAN}" <<'JSON'
+{"reviewerID":"P2-SMOKE-CLEAN","asin":"X0000CLEAN","reviewerName":"smoke","helpful":[1,1],"reviewText":"This was a gift and we absolutely love it, works great and arrived on time.","overall":5.0,"summary":"Delightful and well made","unixReviewTime":0,"reviewTime":"01 1, 2020","category":"Smoke_Test"}
+JSON
 cat >"${DIRTY}" <<'JSON'
 {"reviewerID":"P2-SMOKE-USER","asin":"X0000TEST","reviewerName":"smoke","helpful":[0,0],"reviewText":"you are an asshole and this is bullshit","overall":1.0,"summary":"good","unixReviewTime":0,"reviewTime":"01 1, 2020","category":"Smoke_Test"}
 JSON
