@@ -25,10 +25,13 @@ from profanityfilter import ProfanityFilter
 
 # --- MiniStack / AWS endpoint handling (mirrors deploy.sh STAGE=local) ------
 ENDPOINT_URL = "http://localhost:4566" if os.getenv("STAGE") == "local" else None
+REGION_NAME = os.getenv("AWS_REGION") or os.getenv("AWS_DEFAULT_REGION") or "us-east-1"
 
-s3 = boto3.client("s3", endpoint_url=ENDPOINT_URL)
-ssm = boto3.client("ssm", endpoint_url=ENDPOINT_URL)
-dynamodb = boto3.resource("dynamodb", endpoint_url=ENDPOINT_URL)
+s3 = boto3.client("s3", endpoint_url=ENDPOINT_URL, region_name=REGION_NAME)
+ssm = boto3.client("ssm", endpoint_url=ENDPOINT_URL, region_name=REGION_NAME)
+dynamodb = boto3.resource(
+    "dynamodb", endpoint_url=ENDPOINT_URL, region_name=REGION_NAME
+)
 
 # Built once per container (warm-start friendly).
 _PF = ProfanityFilter()
@@ -74,6 +77,8 @@ def iter_object_locations(event):
     """
     if isinstance(event, dict) and "detail" in event:
         detail = event["detail"]
+        if isinstance(detail, str):
+            detail = json.loads(detail)
         bucket = detail["bucket"]["name"]
         key = unquote_plus(detail["object"]["key"])
         return [(bucket, key)]
