@@ -1,3 +1,4 @@
+# ── TEST-ONLY: dev verification, NOT a submission deliverable — exclude from the ZIP. ──
 """Offline verification for the P2 Lambdas (preprocessing + profanity).
 
 MiniStack is not reachable from this environment, so instead of a live deploy

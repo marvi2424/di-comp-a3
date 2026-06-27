@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# ── TEST-ONLY: dev smoke test, NOT a submission deliverable — exclude from the ZIP. ──
 # P2 smoke test against a RUNNING MiniStack.
 #
 # Uploads one clean review (from the devset) and one crafted impolite review,
