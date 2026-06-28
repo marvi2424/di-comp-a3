@@ -1,0 +1,4 @@
+# Sentiment Lambda dependencies.
+# VADER (Valence Aware Dictionary and sEntiment Reasoner) is included in nltk.
+# Pinned to 3.8.1 to match preprocessing Lambda for consistency.
+nltk==3.8.1
