@@ -1,0 +1,10 @@
+{
+  "positive_reviews": 60434,
+  "neutral_reviews": 11354,
+  "negative_reviews": 7041,
+  "failed_profanity_reviews": 3125,
+  "banned_users": [
+    "A320TMDV6KCFU"
+  ],
+  "total_reviews_scanned": 78829
+}

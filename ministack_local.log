@@ -1,0 +1,270 @@
+2026-06-29 18:16:22 INFO [ministack] 
+  __  __ _       _ ____  _             _
+ |  \/  (_)_ __ (_) ___|| |_ __ _  ___| | __
+ | |\/| | | '_ \| \___ \| __/ _` |/ __| |/ /
+ | |  | | | | | | |___) | || (_| | (__|   <
+ |_|  |_|_|_| |_|_|____/ \__\__,_|\___|_|\_\
+
+ Local AWS Service Emulator — Port 4566
+  Services: S3, SQS, SNS, DynamoDB, Lambda, IAM, STS, SecretsManager, CloudWatch Logs,
+           SSM, EventBridge, Kinesis, CloudWatch, SES, SES v2, ACM, WAF v2, Step Functions,
+           ECS, RDS, ElastiCache, Glue, Athena, API Gateway, Firehose, Route53,
+           Cognito, EC2, EMR, EBS, EFS, ALB/ELBv2, CloudFormation, KMS, ECR, CloudFront,
+           AppSync, Cloud Map, S3 Files, RDS Data API, CodeBuild, AppConfig, Transfer, EKS,
+           Inspector2, IoT Core
+
+2026-06-29 18:16:22 INFO [ministack] Worker thread pool: 64 threads
+2026-06-29 18:16:22 INFO [transfer] SFTP: disabled (asyncssh missing or SFTP_ENABLED=0)
+2026-06-29 18:16:22 INFO [ministack] Ready — 69 services available on port 4566.
+[2026-06-29 18:16:22 +0200] [31301] [INFO] Running on http://0.0.0.0:4566 (CTRL + C to quit)
+2026-06-29 18:16:22 INFO [hypercorn.error] Running on http://0.0.0.0:4566 (CTRL + C to quit)
+2026-06-29 18:16:35 INFO [s3] S3 bucket created: group36-reviews-input
+2026-06-29 18:16:36 INFO [s3] S3 bucket created: group36-reviews-preprocessed
+2026-06-29 18:16:37 INFO [s3] S3 bucket created: group36-reviews-results
+2026-06-29 18:16:38 INFO [dynamodb] DynamoDB table created: group36-reviews-table
+2026-06-29 18:16:39 INFO [dynamodb] DynamoDB table created: group36-customers-table
+2026-06-29 18:16:40 INFO [ssm] SSM PutParameter: /dic2026/group36/s3/input_bucket v1 type=String
+2026-06-29 18:16:40 INFO [ssm] SSM PutParameter: /dic2026/group36/s3/preprocessed_bucket v1 type=String
+2026-06-29 18:16:40 INFO [ssm] SSM PutParameter: /dic2026/group36/s3/results_bucket v1 type=String
+2026-06-29 18:16:41 INFO [ssm] SSM PutParameter: /dic2026/group36/dynamodb/reviews_table v1 type=String
+2026-06-29 18:16:41 INFO [ssm] SSM PutParameter: /dic2026/group36/dynamodb/customers_table v1 type=String
+2026-06-29 18:16:42 INFO [ssm] SSM PutParameter: /dic2026/group36/eventbridge/preprocessed_rule v1 type=String
+2026-06-29 18:16:42 INFO [ssm] SSM PutParameter: /dic2026/group36/config/ban_threshold v1 type=String
+2026-06-29 18:17:12 INFO [lambda] Lambda function created: group36-preprocessing-lambda (python3.11)
+2026-06-29 18:17:13 INFO [lambda] Lambda function created: group36-profanity-lambda (python3.11)
+2026-06-29 18:17:14 INFO [lambda] Lambda function created: group36-sentiment-lambda (python3.11)
+2026-06-29 18:17:15 INFO [lambda] Lambda function created: group36-ban-lambda (python3.11)
+2026-06-29 18:17:17 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:17:19 INFO [lambda_runtime] Lambda worker spawned for group36-preprocessing-lambda (python3.11, cold start)
+2026-06-29 18:17:27 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:17:28 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:17:28 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:17:28 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed review-prep-600f646da5.json -> s3://group36-reviews-preprocessed/preprocessed/review-prep-600f646da5.json
+2026-06-29 18:17:28 INFO [lambda_runtime] Lambda worker spawned for group36-profanity-lambda (python3.11, cold start)
+2026-06-29 18:17:29 INFO [lambda_runtime] Lambda worker spawned for group36-ban-lambda (python3.11, cold start)
+2026-06-29 18:17:29 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review review-prep-600f646da5 (profane=False, reviewer=cust-prep-82d0d57b2b)
+2026-06-29 18:17:29 INFO [lambda] ESM: Lambda group36-ban-lambda processed 1 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:17:29 INFO [lambda_runtime] Lambda worker spawned for group36-sentiment-lambda (python3.11, cold start)
+2026-06-29 18:17:29 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:17:29 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:17:29 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:17:29 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:17:29 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed review-prof-bad-83ec17e288.json -> s3://group36-reviews-preprocessed/preprocessed/review-prof-bad-83ec17e288.json
+2026-06-29 18:17:29 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:17:29 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:17:29 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed review-prof-ok-8d4189334e.json -> s3://group36-reviews-preprocessed/preprocessed/review-prof-ok-8d4189334e.json
+2026-06-29 18:17:30 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review review-prep-600f646da5 (profane=False, reviewer=cust-prep-82d0d57b2b)
+ban: skipping review review-prof-bad-83ec17e288 (profane=None, reviewer=None)
+ban: skipping review review-prof-ok-8d4189334e (profane=None, reviewer=None)
+ban: processing profane review review-prof-bad-83ec17e288 for reviewer cust-prof-bad-f1a11892a7
+ban: updated reviewer cust-prof-bad-f1a11892a7 impoliteCount=1 banned=False
+ban: skipping review review-prof-ok-8d4189334e (profane=False, reviewer=cust-prof-ok-12269f787f)
+2026-06-29 18:17:30 INFO [lambda] ESM: Lambda group36-ban-lambda processed 5 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:17:31 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:17:31 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:17:31 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:17:31 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed review-sent-3604b6f10d.json -> s3://group36-reviews-preprocessed/preprocessed/review-sent-3604b6f10d.json
+2026-06-29 18:17:32 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review review-sent-3604b6f10d (profane=None, reviewer=None)
+ban: skipping review review-sent-3604b6f10d (profane=False, reviewer=cust-sent-f5662aa9da)
+2026-06-29 18:17:32 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:17:33 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:17:33 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:17:33 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:17:33 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed review-sent-d2b35df6ed.json -> s3://group36-reviews-preprocessed/preprocessed/review-sent-d2b35df6ed.json
+2026-06-29 18:17:34 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review review-sent-d2b35df6ed (profane=None, reviewer=None)
+ban: skipping review review-sent-d2b35df6ed (profane=False, reviewer=cust-sent-58883e0b4e)
+2026-06-29 18:17:34 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:17:35 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:17:35 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:17:35 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:17:35 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed review-sent-9dc2a35974.json -> s3://group36-reviews-preprocessed/preprocessed/review-sent-9dc2a35974.json
+2026-06-29 18:17:36 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review review-sent-9dc2a35974 (profane=None, reviewer=None)
+ban: skipping review review-sent-9dc2a35974 (profane=False, reviewer=cust-sent-7185aea0b0)
+2026-06-29 18:17:36 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:17:37 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:17:37 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:17:37 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:17:37 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed review-count-0b8ba2a89f.json -> s3://group36-reviews-preprocessed/preprocessed/review-count-0b8ba2a89f.json
+2026-06-29 18:17:38 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review review-count-0b8ba2a89f (profane=None, reviewer=None)
+ban: processing profane review review-count-0b8ba2a89f for reviewer cust-count-11ecd16629
+ban: updated reviewer cust-count-11ecd16629 impoliteCount=1 banned=False
+2026-06-29 18:17:38 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:17:39 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:17:39 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:17:39 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:17:39 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed review-count-e9b572d3b3.json -> s3://group36-reviews-preprocessed/preprocessed/review-count-e9b572d3b3.json
+2026-06-29 18:17:40 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review review-count-e9b572d3b3 (profane=None, reviewer=None)
+ban: processing profane review review-count-e9b572d3b3 for reviewer cust-count-11ecd16629
+ban: updated reviewer cust-count-11ecd16629 impoliteCount=2 banned=False
+2026-06-29 18:17:40 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:17:41 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:17:41 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:17:41 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:17:41 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed review-ban-d680f08a76.json -> s3://group36-reviews-preprocessed/preprocessed/review-ban-d680f08a76.json
+2026-06-29 18:17:42 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review review-ban-d680f08a76 (profane=None, reviewer=None)
+ban: processing profane review review-ban-d680f08a76 for reviewer cust-ban-016fe870b6
+ban: updated reviewer cust-ban-016fe870b6 impoliteCount=1 banned=False
+2026-06-29 18:17:42 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:17:43 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:17:43 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:17:43 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:17:43 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed review-ban-1d6e9c6d82.json -> s3://group36-reviews-preprocessed/preprocessed/review-ban-1d6e9c6d82.json
+2026-06-29 18:17:44 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review review-ban-1d6e9c6d82 (profane=None, reviewer=None)
+ban: processing profane review review-ban-1d6e9c6d82 for reviewer cust-ban-016fe870b6
+ban: updated reviewer cust-ban-016fe870b6 impoliteCount=2 banned=False
+2026-06-29 18:17:44 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:17:45 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:17:45 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:17:45 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:17:45 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed review-ban-e02e70d52e.json -> s3://group36-reviews-preprocessed/preprocessed/review-ban-e02e70d52e.json
+2026-06-29 18:17:46 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review review-ban-e02e70d52e (profane=None, reviewer=None)
+ban: processing profane review review-ban-e02e70d52e for reviewer cust-ban-016fe870b6
+ban: updated reviewer cust-ban-016fe870b6 impoliteCount=3 banned=False
+2026-06-29 18:17:46 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:17:47 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:17:47 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:17:47 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:17:47 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed review-ban-5a5449dcbd.json -> s3://group36-reviews-preprocessed/preprocessed/review-ban-5a5449dcbd.json
+2026-06-29 18:17:48 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review review-ban-5a5449dcbd (profane=None, reviewer=None)
+ban: processing profane review review-ban-5a5449dcbd for reviewer cust-ban-016fe870b6
+ban: updated reviewer cust-ban-016fe870b6 impoliteCount=4 banned=True
+2026-06-29 18:17:48 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:17:49 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:17:49 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:17:49 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:17:49 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed cc-c21ebba61c-r000.json -> s3://group36-reviews-preprocessed/preprocessed/cc-c21ebba61c-r000.json
+2026-06-29 18:17:50 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review cc-c21ebba61c-r000 (profane=None, reviewer=None)
+ban: processing profane review cc-c21ebba61c-r000 for reviewer cc-c21ebba61c-customerBANNED
+ban: updated reviewer cc-c21ebba61c-customerBANNED impoliteCount=1 banned=False
+2026-06-29 18:17:50 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:17:51 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:17:51 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:17:51 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:17:51 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed cc-c21ebba61c-r001.json -> s3://group36-reviews-preprocessed/preprocessed/cc-c21ebba61c-r001.json
+2026-06-29 18:17:52 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review cc-c21ebba61c-r001 (profane=None, reviewer=None)
+ban: processing profane review cc-c21ebba61c-r001 for reviewer cc-c21ebba61c-customerBANNED
+ban: updated reviewer cc-c21ebba61c-customerBANNED impoliteCount=2 banned=False
+2026-06-29 18:17:52 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:17:53 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:17:53 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:17:53 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:17:53 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed cc-c21ebba61c-r002.json -> s3://group36-reviews-preprocessed/preprocessed/cc-c21ebba61c-r002.json
+2026-06-29 18:17:54 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review cc-c21ebba61c-r002 (profane=None, reviewer=None)
+ban: processing profane review cc-c21ebba61c-r002 for reviewer cc-c21ebba61c-customerBANNED
+ban: updated reviewer cc-c21ebba61c-customerBANNED impoliteCount=3 banned=False
+2026-06-29 18:17:54 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:17:55 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:17:56 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:17:56 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:17:56 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed cc-c21ebba61c-r003.json -> s3://group36-reviews-preprocessed/preprocessed/cc-c21ebba61c-r003.json
+2026-06-29 18:17:56 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review cc-c21ebba61c-r003 (profane=None, reviewer=None)
+ban: processing profane review cc-c21ebba61c-r003 for reviewer cc-c21ebba61c-customerBANNED
+ban: updated reviewer cc-c21ebba61c-customerBANNED impoliteCount=4 banned=True
+2026-06-29 18:17:56 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:17:58 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:17:58 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:17:58 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:17:58 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed cc-c21ebba61c-r004.json -> s3://group36-reviews-preprocessed/preprocessed/cc-c21ebba61c-r004.json
+2026-06-29 18:17:58 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review cc-c21ebba61c-r004 (profane=None, reviewer=None)
+ban: processing profane review cc-c21ebba61c-r004 for reviewer cc-c21ebba61c-customerEDGE
+ban: updated reviewer cc-c21ebba61c-customerEDGE impoliteCount=1 banned=False
+2026-06-29 18:17:58 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:18:00 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:18:00 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:18:00 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:18:00 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed cc-c21ebba61c-r005.json -> s3://group36-reviews-preprocessed/preprocessed/cc-c21ebba61c-r005.json
+2026-06-29 18:18:00 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review cc-c21ebba61c-r005 (profane=None, reviewer=None)
+ban: processing profane review cc-c21ebba61c-r005 for reviewer cc-c21ebba61c-customerEDGE
+ban: updated reviewer cc-c21ebba61c-customerEDGE impoliteCount=2 banned=False
+2026-06-29 18:18:00 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:18:02 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:18:02 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:18:02 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:18:02 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed cc-c21ebba61c-r006.json -> s3://group36-reviews-preprocessed/preprocessed/cc-c21ebba61c-r006.json
+2026-06-29 18:18:02 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review cc-c21ebba61c-r006 (profane=None, reviewer=None)
+ban: processing profane review cc-c21ebba61c-r006 for reviewer cc-c21ebba61c-customerEDGE
+ban: updated reviewer cc-c21ebba61c-customerEDGE impoliteCount=3 banned=False
+2026-06-29 18:18:02 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:18:04 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:18:04 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:18:04 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:18:04 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed cc-c21ebba61c-r007.json -> s3://group36-reviews-preprocessed/preprocessed/cc-c21ebba61c-r007.json
+2026-06-29 18:18:04 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review cc-c21ebba61c-r007 (profane=None, reviewer=None)
+ban: skipping review cc-c21ebba61c-r007 (profane=False, reviewer=cc-c21ebba61c-customerCLEAN)
+2026-06-29 18:18:04 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:18:06 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:18:06 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:18:06 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:18:06 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed cc-c21ebba61c-r008.json -> s3://group36-reviews-preprocessed/preprocessed/cc-c21ebba61c-r008.json
+2026-06-29 18:18:06 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review cc-c21ebba61c-r008 (profane=None, reviewer=None)
+ban: skipping review cc-c21ebba61c-r008 (profane=False, reviewer=cc-c21ebba61c-customerSARCASM)
+2026-06-29 18:18:06 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:18:08 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:18:08 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:18:08 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:18:08 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed cc-c21ebba61c-r009.json -> s3://group36-reviews-preprocessed/preprocessed/cc-c21ebba61c-r009.json
+2026-06-29 18:18:08 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review cc-c21ebba61c-r009 (profane=None, reviewer=None)
+ban: skipping review cc-c21ebba61c-r009 (profane=False, reviewer=cc-c21ebba61c-customerNEUTRAL)
+2026-06-29 18:18:08 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:18:10 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:18:10 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:18:10 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:18:10 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed cc-c21ebba61c-r010.json -> s3://group36-reviews-preprocessed/preprocessed/cc-c21ebba61c-r010.json
+2026-06-29 18:18:10 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review cc-c21ebba61c-r010 (profane=False, reviewer=cc-c21ebba61c-customerEMPTY)
+ban: skipping review cc-c21ebba61c-r010 (profane=False, reviewer=cc-c21ebba61c-customerEMPTY)
+2026-06-29 18:18:10 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table
+2026-06-29 18:18:12 INFO [s3] S3 notification → Lambda group36-preprocessing-lambda (async with retry+DLQ)
+2026-06-29 18:18:12 INFO [events] EventBridge → Lambda group36-profanity-lambda: dispatched
+2026-06-29 18:18:12 INFO [events] EventBridge → Lambda group36-sentiment-lambda: dispatched
+2026-06-29 18:18:12 INFO [lambda] Lambda group36-preprocessing-lambda async output (attempt 1):
+preprocessed cc-c21ebba61c-r011.json -> s3://group36-reviews-preprocessed/preprocessed/cc-c21ebba61c-r011.json
+2026-06-29 18:18:12 INFO [lambda] ESM: Lambda group36-ban-lambda output:
+ban: skipping review cc-c21ebba61c-r011 (profane=None, reviewer=None)
+ban: processing profane review cc-c21ebba61c-r011 for reviewer cc-c21ebba61c-customerSUMMARY
+ban: updated reviewer cc-c21ebba61c-customerSUMMARY impoliteCount=1 banned=False
+2026-06-29 18:18:12 INFO [lambda] ESM: Lambda group36-ban-lambda processed 2 DynamoDB stream records from group36-reviews-table

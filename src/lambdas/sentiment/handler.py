@@ -33,6 +33,16 @@ dynamodb = boto3.resource(
     "dynamodb", endpoint_url=ENDPOINT_URL, region_name=REGION_NAME
 )
 
+# --- NLTK data: use the bundled corpus, never download at runtime -----------
+# VADER needs the `vader_lexicon` corpus. MiniStack Lambdas have no outbound
+# network, so it must be bundled next to this file in nltk_data/ (deploy.sh
+# copies that directory into the deployment package) and the path registered
+# here, exactly like the preprocessing Lambda does for its corpora. Without
+# this the worker dies at init: "Resource vader_lexicon not found".
+_BUNDLED_NLTK_DATA = os.path.join(os.path.dirname(__file__), "nltk_data")
+if _BUNDLED_NLTK_DATA not in nltk.data.path:
+    nltk.data.path.insert(0, _BUNDLED_NLTK_DATA)
+
 # Built once per container (warm-start friendly).
 _VADER = SentimentIntensityAnalyzer()
 

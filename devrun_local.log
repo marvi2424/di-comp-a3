@@ -1,0 +1,107 @@
+Endpoint:        http://localhost:4566
+Input bucket:    group36-reviews-input
+Reviews table:   group36-reviews-table
+Customers table: group36-customers-table
+
+Reading dataset: /Users/gianlucatrapuzzano/Documents/UNI/TUWIEN/data-intensive-computing/di-comp-a3/src/data/reviews_devset.json
+Loaded 78829 reviews.
+
+Uploading to s3://group36-reviews-input in batches of 1000 (backpressure on) ...
+  uploaded 1000/78829, processed 1000
+  uploaded 2000/78829, processed 2000
+  uploaded 3000/78829, processed 3000
+  uploaded 4000/78829, processed 4000
+  uploaded 5000/78829, processed 5000
+  uploaded 6000/78829, processed 6000
+  uploaded 7000/78829, processed 7000
+  uploaded 8000/78829, processed 8000
+  uploaded 9000/78829, processed 9000
+  uploaded 10000/78829, processed 10000
+  uploaded 11000/78829, processed 11000
+  uploaded 12000/78829, processed 12000
+  uploaded 13000/78829, processed 13000
+  uploaded 14000/78829, processed 14000
+  uploaded 15000/78829, processed 15000
+  uploaded 16000/78829, processed 16000
+  uploaded 17000/78829, processed 17000
+  uploaded 18000/78829, processed 18000
+  uploaded 19000/78829, processed 19000
+  uploaded 20000/78829, processed 20000
+  uploaded 21000/78829, processed 21000
+  uploaded 22000/78829, processed 22000
+  uploaded 23000/78829, processed 23000
+  uploaded 24000/78829, processed 24000
+  uploaded 25000/78829, processed 25000
+  uploaded 26000/78829, processed 26000
+  uploaded 27000/78829, processed 27000
+  uploaded 28000/78829, processed 28000
+  uploaded 29000/78829, processed 29000
+  uploaded 30000/78829, processed 30000
+  uploaded 31000/78829, processed 31000
+  uploaded 32000/78829, processed 32000
+  uploaded 33000/78829, processed 33000
+  uploaded 34000/78829, processed 34000
+  uploaded 35000/78829, processed 35000
+  uploaded 36000/78829, processed 36000
+  uploaded 37000/78829, processed 37000
+  uploaded 38000/78829, processed 38000
+  uploaded 39000/78829, processed 39000
+  uploaded 40000/78829, processed 40000
+  uploaded 41000/78829, processed 41000
+  uploaded 42000/78829, processed 42000
+  uploaded 43000/78829, processed 43000
+  uploaded 44000/78829, processed 44000
+  uploaded 45000/78829, processed 45000
+  uploaded 46000/78829, processed 46000
+  uploaded 47000/78829, processed 47000
+  uploaded 48000/78829, processed 48000
+  uploaded 49000/78829, processed 49000
+  uploaded 50000/78829, processed 50000
+  uploaded 51000/78829, processed 51000
+  uploaded 52000/78829, processed 52000
+  uploaded 53000/78829, processed 53000
+  uploaded 54000/78829, processed 54000
+  uploaded 55000/78829, processed 55000
+  uploaded 56000/78829, processed 56000
+  uploaded 57000/78829, processed 57000
+  uploaded 58000/78829, processed 58000
+  uploaded 59000/78829, processed 59000
+  uploaded 60000/78829, processed 60000
+  uploaded 61000/78829, processed 61000
+  uploaded 62000/78829, processed 62000
+  uploaded 63000/78829, processed 63000
+  uploaded 64000/78829, processed 64000
+  uploaded 65000/78829, processed 65000
+  uploaded 66000/78829, processed 66000
+  uploaded 67000/78829, processed 67000
+  uploaded 68000/78829, processed 68000
+  uploaded 69000/78829, processed 69000
+  uploaded 70000/78829, processed 70000
+  uploaded 71000/78829, processed 71000
+  uploaded 72000/78829, processed 72000
+  uploaded 73000/78829, processed 73000
+  uploaded 74000/78829, processed 74000
+  uploaded 75000/78829, processed 75000
+  uploaded 76000/78829, processed 76000
+  uploaded 77000/78829, processed 77000
+  uploaded 78000/78829, processed 78000
+  uploaded 78829/78829, processed 78829
+
+Final wait for the chain to finish all reviews...
+  processed 78829/78829 reviews...
+
+Waiting for the ban Lambda (DynamoDB stream) to settle...
+
+Aggregating results...
+
+=== RESULTS (devset only) ===
+{
+  "positive_reviews": 60434,
+  "neutral_reviews": 11354,
+  "negative_reviews": 7041,
+  "failed_profanity_reviews": 3125,
+  "banned_users": [],
+  "total_reviews_scanned": 78829
+}
+
+Written to /Users/gianlucatrapuzzano/Documents/UNI/TUWIEN/data-intensive-computing/di-comp-a3/src/results/results.json
